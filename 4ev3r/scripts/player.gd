@@ -21,3 +21,4 @@ extends CharacterBody3D
 @export_subgroup("Wall Bullshit")
 @export var REMAINING_WALL_JUMPS: int = 3
 @export var WALL_JUMP_ANGLE: float = 0.0
+@export_group("")
