@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://npmsbepnx4up"]
+[gd_scene load_steps=3 format=3 uid="uid://npmsbepnx4up"]
+
+[ext_resource type="Script" uid="uid://ccl3l327g3kab" path="res://4ev3r/scripts/player.gd" id="1_twpaa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cdbq2"]
 
 [node name="player" type="CharacterBody3D"]
+script = ExtResource("1_twpaa")
 
 [node name="collider" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cdbq2")
