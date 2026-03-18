@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://npmsbepnx4up"]
+[gd_scene load_steps=4 format=3 uid="uid://npmsbepnx4up"]
 
 [ext_resource type="Script" uid="uid://ccl3l327g3kab" path="res://4ev3r/scripts/player.gd" id="1_twpaa"]
+[ext_resource type="Script" uid="uid://deta71lxn5rij" path="res://4ev3r/scripts/ui.gd" id="2_tjaaq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cdbq2"]
 
@@ -14,3 +15,33 @@ shape = SubResource("CapsuleShape3D_cdbq2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="camera" type="Camera3D" parent="camPivot"]
+
+[node name="UI" type="Node3D" parent="camPivot/camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="Control" type="Control" parent="camPivot/camera/UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 24.0
+script = ExtResource("2_tjaaq")
+
+[node name="Speed Label" type="Label" parent="camPivot/camera/UI/Control"]
+layout_mode = 0
+offset_right = 188.0
+offset_bottom = 23.0
+text = "SPEED:"
+
+[node name="WallJumps Label" type="Label" parent="camPivot/camera/UI/Control"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 188.0
+offset_bottom = 71.0
+text = "WALLJUMPS:"
+
+[node name="Acceleration Label" type="Label" parent="camPivot/camera/UI/Control"]
+layout_mode = 0
+offset_top = 24.0
+offset_right = 212.0
+offset_bottom = 47.0
+text = "ACCELERATION: "

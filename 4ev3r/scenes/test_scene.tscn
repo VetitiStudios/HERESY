@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://qianf7504433"]
+
+[ext_resource type="PackedScene" uid="uid://npmsbepnx4up" path="res://4ev3r/scenes/player.tscn" id="1_45cue"]
+
+[sub_resource type="Environment" id="Environment_rk0y3"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_45cue"]
+
+[sub_resource type="Compositor" id="Compositor_qj5fh"]
+
+[node name="TestScene" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rk0y3")
+camera_attributes = SubResource("CameraAttributesPractical_45cue")
+compositor = SubResource("Compositor_qj5fh")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="WorldEnvironment"]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="WorldEnvironment/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.01529, -0.374268, 0.334351)
+size = Vector3(16.9078, 0.251465, 10.9275)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="WorldEnvironment/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.365234, 4.33011, 0.252045)
+size = Vector3(0.269531, 9.66022, 11.0255)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="WorldEnvironment/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.57537, 5.78066, 0.252045)
+size = Vector3(0.269531, 6.92133, 11.0255)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.573534, 0.819182, 0, -0.819182, 0.573534, -2.99787, 7, 6.92383)
+
+[node name="player" parent="." instance=ExtResource("1_45cue")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.69008, 1.86086, 1.95335)
