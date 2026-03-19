@@ -45,3 +45,10 @@ offset_top = 24.0
 offset_right = 212.0
 offset_bottom = 47.0
 text = "ACCELERATION: "
+
+[node name="FPS Label" type="Label" parent="camPivot/camera/UI/Control"]
+layout_mode = 0
+offset_top = 72.0
+offset_right = 212.0
+offset_bottom = 95.0
+text = "FPS: "

@@ -2,7 +2,8 @@ extends Control
 
 @onready var speed_label = $"Speed Label"
 @onready var accel_label = $"Acceleration Label"
-@onready var walljump_label = $"WallJumps Label"
+@onready var walljump_label = $"WallJump Label"
+@onready var fps_label = $"FPS Label"
 
 var player = null
 var last_velocity := Vector3.ZERO
@@ -11,11 +12,21 @@ func _process(delta):
 	if player == null:
 		return
 
-	var vel = player.velocity  
+	# --- Horizontal speed ---
+	var vel = player.velocity
 	vel.y = 0
 	var speed = round(vel.length() * 100) / 100.0
 	speed_label.text = "Speed: " + str(speed)
+
+	# --- Acceleration ---
 	var accel = round((player.velocity - last_velocity).length() / delta * 100) / 100.0
 	accel_label.text = "Accel: " + str(accel)
+
+	# --- Wall jumps ---
 	walljump_label.text = "Wall Jumps: " + str(player.REMAINING_WALL_JUMPS)
+
+	# --- FPS ---
+	var fps = Engine.get_frames_per_second()
+	fps_label.text = "FPS: " + str(fps)
+
 	last_velocity = player.velocity
