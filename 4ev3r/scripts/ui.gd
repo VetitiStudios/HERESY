@@ -4,6 +4,8 @@ extends Control
 @onready var accel_label = $"Acceleration Label"
 @onready var walljump_label = $"WallJump Label"
 @onready var fps_label = $"FPS Label"
+@onready var dash_label = $"Dash Label"
+@onready var dash_charge_label = $"DashCharge Label"
 
 var player = null
 var last_velocity := Vector3.ZERO
@@ -28,5 +30,12 @@ func _process(delta):
 	# --- FPS ---
 	var fps = Engine.get_frames_per_second()
 	fps_label.text = "FPS: " + str(fps)
+	
+	# --- DASH ---
+	var dash = player.REMAINING_DASHES
+	dash_label.text = "DASH: " + str(dash)
+	
+	var dashCharge = player.DASH_CHARGE*100
+	dash_charge_label.text = "DASH CHARGE: " + str(dashCharge) + " / 100"
 
 	last_velocity = player.velocity

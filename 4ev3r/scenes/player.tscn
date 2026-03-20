@@ -7,6 +7,10 @@
 
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_twpaa")
+BASE_FOV = 90.0
+TARGET_FOV = 90.0
+FOV_LERP_SPEED = 4.0
+MAX_TILT = 0.01
 
 [node name="collider" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cdbq2")
@@ -52,3 +56,17 @@ offset_top = 72.0
 offset_right = 212.0
 offset_bottom = 95.0
 text = "FPS: "
+
+[node name="Dash Label" type="Label" parent="camPivot/camera/UI/Control"]
+layout_mode = 0
+offset_top = 97.0
+offset_right = 212.0
+offset_bottom = 120.0
+text = "Dash: "
+
+[node name="DashCharge Label" type="Label" parent="camPivot/camera/UI/Control"]
+layout_mode = 0
+offset_top = 128.0
+offset_right = 212.0
+offset_bottom = 151.0
+text = "Dash Charge: "
