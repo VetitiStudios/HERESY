@@ -1,9 +1,58 @@
-[gd_scene load_steps=4 format=3 uid="uid://npmsbepnx4up"]
+[gd_scene load_steps=12 format=3 uid="uid://npmsbepnx4up"]
 
 [ext_resource type="Script" uid="uid://ccl3l327g3kab" path="res://4ev3r/scripts/player.gd" id="1_twpaa"]
 [ext_resource type="Script" uid="uid://deta71lxn5rij" path="res://4ev3r/scripts/ui.gd" id="2_tjaaq"]
+[ext_resource type="Texture2D" uid="uid://nbgia1ek0ywf" path="res://4ev3r/assets/pistol/pixilart-sprite.png" id="3_hvu2o"]
+[ext_resource type="Texture2D" uid="uid://dfupx4ufetq8o" path="res://4ev3r/assets/pistol/tile001.png" id="4_kmg5g"]
+[ext_resource type="Texture2D" uid="uid://eq1qtxxn10nj" path="res://4ev3r/assets/pistol/tile000.png" id="6_ootxn"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cdbq2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ootxn"]
+atlas = ExtResource("4_kmg5g")
+region = Rect2(0, 0, 596, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vgnix"]
+atlas = ExtResource("3_hvu2o")
+region = Rect2(0, 0, 596, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cw3nu"]
+atlas = ExtResource("3_hvu2o")
+region = Rect2(596, 0, 596, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3ppy"]
+atlas = ExtResource("6_ootxn")
+region = Rect2(0, 0, 596, 336)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d3ppy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ootxn")
+}],
+"loop": true,
+"name": &"empty",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vgnix")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cw3nu")
+}],
+"loop": true,
+"name": &"fire",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3ppy")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
 
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_twpaa")
@@ -68,3 +117,17 @@ offset_top = 128.0
 offset_right = 212.0
 offset_bottom = 151.0
 text = "Dash Charge: "
+
+[node name="gun" type="Node3D" parent="."]
+
+[node name="Control" type="Control" parent="gun"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="pistol" type="AnimatedSprite2D" parent="gun/Control"]
+position = Vector2(833, 468)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_d3ppy")
+animation = &"idle"

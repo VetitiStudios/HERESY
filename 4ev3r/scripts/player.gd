@@ -3,6 +3,8 @@ extends CharacterBody3D
 @onready var collider: CollisionShape3D = $collider
 @onready var cam_pivot: Node3D = $camPivot
 @onready var camera: Camera3D = $camPivot/camera
+@onready var gun: Node3D = $gun
+@onready var gun_pistol: AnimatedSprite2D = $gun/Control/pistol
 
 @export_group("Camera Stuff")
 @export_subgroup("Direct Alterations")
@@ -53,6 +55,9 @@ extends CharacterBody3D
 @export var SLAM_SPEED: int = 15
 @export var SLAM_WAIT: float = 0.5
 
+@export_group("Gun Stuff")
+@export var MAX_AMMO: int = 12
+var current_ammo: int = 12
 
 var grounded_time: float = 0.0
 var air_max_speed: float:
