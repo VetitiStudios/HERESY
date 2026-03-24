@@ -3,8 +3,6 @@ extends CharacterBody3D
 @onready var collider: CollisionShape3D = $collider
 @onready var cam_pivot: Node3D = $camPivot
 @onready var camera: Camera3D = $camPivot/camera
-@onready var gun: Node3D = $gun
-@onready var gun_pistol: AnimatedSprite2D = $gun/Control/pistol
 
 @export_group("Camera Stuff")
 @export_subgroup("Direct Alterations")
@@ -33,7 +31,6 @@ extends CharacterBody3D
 @export var FRICTION_DELAY: float = 0.5
 @export var GRAVITY: float = 2.5
 
-
 @export_subgroup("Speed Alterations")
 @export var SPEED: float = 0.0
 @export var MAX_SPEED: float = 5.0
@@ -56,8 +53,15 @@ extends CharacterBody3D
 @export var SLAM_WAIT: float = 0.5
 
 @export_group("Gun Stuff")
-@export var MAX_AMMO: int = 12
-var current_ammo: int = 12
+@onready var PISTOL = {
+	"animation": $gun/Control/pistol,
+	"fire_animation_len": .3,
+	"current_animation": "idle",
+	"current_ammo": 12,
+	"max_ammo": 12,
+	"type": "pistol"
+	}
+@onready var CURRENT_GUN = PISTOL
 
 var grounded_time: float = 0.0
 var air_max_speed: float:
@@ -66,7 +70,6 @@ var air_max_speed: float:
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
 	var ui = camera.get_node_or_null("UI/Control")
 	if ui:
 		ui.player = self
@@ -88,6 +91,8 @@ func _input(event):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _physics_process(delta):
+	# leave this line until YOU make the animation player, im already making everything for you lmao
+	CURRENT_GUN["animation"].play(CURRENT_GUN["current_animation"])
 	GROUNDED = is_on_floor()
 	SPEED = velocity.length()
 
@@ -141,7 +146,7 @@ func _physics_process(delta):
 			velocity.z = move_toward(velocity.z, 0, FRICTION * delta * 6.0)
 
 	# Jumping
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_pressed("jump"): # i switched it to this so it can auto bhop
 		if is_on_wall_only() and REMAINING_WALL_JUMPS > 0:
 			var wall_normal = get_wall_collision_normal()
 			velocity.x = wall_normal.x * WALL_JUMP_FORCE
@@ -191,10 +196,14 @@ func _physics_process(delta):
 
 	TILT_ANGLE = lerp(TILT_ANGLE, target_tilt, delta * (TILT_SPEED * 1.5 if IS_DASHING else TILT_SPEED))
 	camera.rotation.z = TILT_ANGLE
+	
+	# Gun Jazz
+	if Input.is_action_just_pressed("fire") and CURRENT_GUN["type"] == "pistol":
+		fire()
 
 	# FOV smoothing
 	camera.fov = lerp(camera.fov, TARGET_FOV, delta * FOV_LERP_SPEED)
-
+	
 	move_and_slide()
 
 func start_dash(direction):
@@ -226,3 +235,14 @@ func get_wall_collision_normal() -> Vector3:
 		if collision.get_normal().y < 0.1:
 			return collision.get_normal()
 	return Vector3.ZERO
+
+func fire() -> void:
+	var _timer:= Timer.new()
+	CURRENT_GUN["current_animation"] = "fire"
+	_timer.start(CURRENT_GUN["fire_animation_len"])
+	_timer.connect("timeout",func()->void:
+		if CURRENT_GUN["current_ammo"]>0:
+			CURRENT_GUN["current_animation"] = "idle"
+		else:
+			CURRENT_GUN["current_animation"] = "empty"
+	)

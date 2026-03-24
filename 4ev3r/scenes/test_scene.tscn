@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://qianf7504433"]
 
 [ext_resource type="PackedScene" uid="uid://npmsbepnx4up" path="res://4ev3r/scenes/player.tscn" id="1_45cue"]
-[ext_resource type="Texture2D" uid="uid://c136sxaq6kjrp" path="res://4ev3r/assets/Dark/texture_08.png" id="2_jojmw"]
-[ext_resource type="Texture2D" uid="uid://dm14tgu5ty3fw" path="res://4ev3r/assets/Green/texture_09.png" id="3_2t1nk"]
-[ext_resource type="Texture2D" uid="uid://btniepqhnrb77" path="res://4ev3r/assets/Red/texture_09.png" id="4_xxkay"]
+[ext_resource type="Texture2D" uid="uid://c136sxaq6kjrp" path="res://4ev3r/assets/debug-textures/Dark/texture_08.png" id="2_jojmw"]
+[ext_resource type="Texture2D" uid="uid://dm14tgu5ty3fw" path="res://4ev3r/assets/debug-textures/Green/texture_09.png" id="3_2t1nk"]
+[ext_resource type="Texture2D" uid="uid://btniepqhnrb77" path="res://4ev3r/assets/debug-textures/Red/texture_09.png" id="4_xxkay"]
 
 [sub_resource type="Environment" id="Environment_rk0y3"]
 
