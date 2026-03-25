@@ -6,6 +6,7 @@ extends Control
 @onready var fps_label = $"FPS Label"
 @onready var dash_label = $"Dash Label"
 @onready var dash_charge_label = $"DashCharge Label"
+@onready var ammo_label = $"Ammo Label"
 
 var player = null
 var last_velocity := Vector3.ZERO
@@ -35,5 +36,8 @@ func _process(delta):
 	
 	var dashCharge = player.DASH_CHARGE*100
 	dash_charge_label.text = "DASH CHARGE: " + str(dashCharge) + " / 100"
-
+	
 	last_velocity = player.velocity
+
+	# --- AMMO ---
+	ammo_label.text = "Ammo: " + str(player.current_ammo) + " : " + str(player.max_ammo)

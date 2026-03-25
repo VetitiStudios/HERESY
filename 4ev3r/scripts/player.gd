@@ -59,15 +59,25 @@ extends CharacterBody3D
 	"current_animation": "idle",
 	"current_ammo": 12,
 	"max_ammo": 12,
-	"type": "pistol"
+	"type": "pistol",
+	"top Y": 541.0,
+	"bottom Y": 914.0,
+	"tween_speed": 5.0,
+	"damage": 5
 }
 @onready var CURRENT_GUN = PISTOL
-
-
+var max_ammo:=0
+var current_ammo:=0
 @onready var FIRE_TIMER: Timer
-var fire_queue: int = 0
-var is_firing: bool = false
-var fire_button_held: bool = false
+@export var fire_queue: int = 0
+@export var is_firing: bool = false
+@export var fire_button_held: bool = false
+
+@onready var RELOAD_TIMER: Timer
+@export
+
+
+
 
 var grounded_time: float = 0.0
 var air_max_speed: float:
@@ -113,6 +123,8 @@ func _input(event):
 
 func _physics_process(delta):
 	CURRENT_GUN["animation"].play(CURRENT_GUN["current_animation"])
+	current_ammo = CURRENT_GUN["current_ammo"]
+	max_ammo = CURRENT_GUN["max_ammo"]
 	GROUNDED = is_on_floor()
 	SPEED = velocity.length()
 
@@ -168,9 +180,9 @@ func _physics_process(delta):
 	# Jumping
 	if Input.is_action_pressed("jump"):
 		if is_on_wall_only() and REMAINING_WALL_JUMPS > 0:
-			var wall_normal = get_wall_collision_normal()
-			velocity.x = wall_normal.x * WALL_JUMP_FORCE
-			velocity.z = wall_normal.z * WALL_JUMP_FORCE
+			var wn = get_wall_collision_normal()
+			velocity.x = wn.x * WALL_JUMP_FORCE
+			velocity.z = wn.z * WALL_JUMP_FORCE
 			velocity.y = JUMP_HEIGHT * 2.5
 
 			REMAINING_WALL_JUMPS -= 1
@@ -246,6 +258,21 @@ func start_dash(direction):
 	TARGET_FOV = BASE_FOV
 	IS_DASHING = false
 
+func tween_to_position(startposition,endposition, time):
+	var _time:= time
+	var _endposition := startposition
+	var _startposition := endposition
+	var _finished := false
+
+	if _startposition>_endposition:
+		while !_finished:
+
+
+	elif _endposition>_startposition
+		while !_finished:
+
+	else:
+		_finished = true
 
 func get_wall_collision_normal() -> Vector3:
 	for i in range(get_slide_collision_count()):
@@ -265,6 +292,12 @@ func fire() -> void:
 	if not is_firing:
 		_start_fire_animation()
 
+func _pistol_reload() -> void:
+	CURRENT_GUN["current_ammo"] = 0
+	CURRENT_GUN["current_animation"] = "empty"
+
+
+
 
 func _start_fire_animation() -> void:
 	if fire_queue <= 0 or CURRENT_GUN["current_ammo"] <= 0:
@@ -278,6 +311,7 @@ func _start_fire_animation() -> void:
 
 	FIRE_TIMER.wait_time = CURRENT_GUN["fire_animation_len"]
 	FIRE_TIMER.start()
+
 
 
 func _on_fire_timer_timeout() -> void:

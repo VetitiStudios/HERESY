@@ -44,7 +44,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ootxn")
 }],
-"loop": false,
+"loop": true,
 "name": &"empty",
 "speed": 8.0
 }, {
@@ -76,8 +76,38 @@ animations = [{
 
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_twpaa")
+MOUSE_SENSITIVITY = null
+CAMERA_X_ROTATION = null
+BASE_FOV = null
+TARGET_FOV = null
 FOV_LERP_SPEED = 4.0
+TILT_ANGLE = null
+TARGET_TILT = null
+TILT_SPEED = null
 MAX_TILT = 0.01
+IS_DASHING = null
+GROUNDED = null
+WALL_COLLIED = null
+IS_MOVING = null
+IS_JUMPING = null
+IS_SLAMMING = null
+CAN_WALL_JUMP = null
+FRICTION = null
+FRICTION_DELAY = null
+GRAVITY = null
+SPEED = null
+MAX_SPEED = null
+ACCELERATION = null
+DASH_SPEED = null
+JUMP_HEIGHT = null
+REMAINING_DASHES = null
+DASH_CHARGE_SPEED = null
+DASH_CHARGE = null
+REMAINING_WALL_JUMPS = null
+WALL_JUMP_ANGLE = null
+WALL_JUMP_FORCE = null
+SLAM_SPEED = null
+SLAM_WAIT = null
 
 [node name="collider" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_cdbq2")
@@ -126,17 +156,24 @@ text = "FPS: "
 
 [node name="Dash Label" type="Label" parent="camPivot/camera/UI/Control"]
 layout_mode = 0
-offset_top = 97.0
+offset_top = 96.0
 offset_right = 212.0
-offset_bottom = 120.0
+offset_bottom = 119.0
 text = "Dash: "
 
 [node name="DashCharge Label" type="Label" parent="camPivot/camera/UI/Control"]
 layout_mode = 0
-offset_top = 128.0
+offset_top = 120.0
 offset_right = 212.0
-offset_bottom = 151.0
+offset_bottom = 143.0
 text = "Dash Charge: "
+
+[node name="Ammo Label" type="Label" parent="camPivot/camera/UI/Control"]
+layout_mode = 0
+offset_top = 144.0
+offset_right = 212.0
+offset_bottom = 167.0
+text = "Ammo Count:"
 
 [node name="gun" type="Node3D" parent="."]
 
@@ -147,7 +184,9 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="pistol" type="AnimatedSprite2D" parent="gun/Control"]
-position = Vector2(939, 541)
+position = Vector2(939, 914)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_d3ppy")
-animation = &"empty"
+animation = &"fire"
+frame = 1
+frame_progress = 1.0
