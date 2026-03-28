@@ -1,26 +1,5 @@
 extends Node3D
 
-@onready var PISTOL = {
-	"animation": $Control/pistol,
-	"fire_animation_len": .15,
-	"current_animation": "idle",
-	"current_ammo": 12,
-	"max_ammo": 12,
-	"type": "pistol",
-	"centeredX": 939.0,
-	"centeredY": 541.0,
-	"reloadX": 939.0,
-	"reloadTopY": 541.0,
-	"reloadBottomY": 914.0,
-	"reloadTimer": 3.0,
-	"walkXLeft": 859.0,
-	"walkYBottom": 585.0,
-	"walkXRight": 1019.0,
-	"sway_time": .5,
-	"targetTweenDir": "left",
-	"prevTweenDir": "jew",
-	"damage": 5,
-}
 @onready var FIRE_TIMER: Timer
 @onready var CURRENT_GUN = {}
 @export var ui: Control
@@ -32,6 +11,7 @@ var fire_button_held: bool = false
 var is_firing: bool = false
 var is_reloading: bool = false
 var moving: bool = false
+
 
 func _ready():
 	var PISTOL = load_json("res://4ev3r/gundata/pistol.json")
@@ -46,6 +26,7 @@ func _ready():
 
 	if ui:
 		ui.Gun = self
+
 
 func _input(event):
 	moving = (
@@ -129,36 +110,6 @@ func _pistol_reload() -> void:
 	CURRENT_GUN["current_ammo"] = CURRENT_GUN["max_ammo"]
 	CURRENT_GUN["current_animation"] = "idle"
 
-func _start_gun_sway() -> void:
-	var _target_sprite: AnimatedSprite2D = CURRENT_GUN["animation"]
-
-	while moving and not is_reloading:
-		var target_pos: Vector2
-		match CURRENT_GUN["targetTweenDir"]:
-			"left":
-				target_pos = Vector2(CURRENT_GUN["walkXLeft"], CURRENT_GUN["walkYBottom"])
-			"right":
-				target_pos = Vector2(CURRENT_GUN["walkXRight"], CURRENT_GUN["walkYBottom"])
-			"center":
-				target_pos = Vector2(CURRENT_GUN["centeredX"], CURRENT_GUN["centeredY"])
-			_:
-				target_pos = Vector2(CURRENT_GUN["centeredX"], CURRENT_GUN["centeredY"])
-
-		var _tween = create_tween()
-		_tween.set_ease(Tween.EASE_IN_OUT)
-		_tween.tween_property(_target_sprite, "position", target_pos, CURRENT_GUN["sway_time"])
-		await _tween.finished
-
-		var prev_dir = CURRENT_GUN["targetTweenDir"]
-		if CURRENT_GUN["targetTweenDir"] == "center":
-			if CURRENT_GUN["prevTweenDir"] == "left":
-				CURRENT_GUN["targetTweenDir"] = "right"
-			elif CURRENT_GUN["prevTweenDir"] == "right":
-				CURRENT_GUN["targetTweenDir"] = "left"
-			else:
-				CURRENT_GUN["targetTweenDir"] = ["left", "right"][randi_range(0, 1)]
-		else:
-			CURRENT_GUN["targetTweenDir"] = "center"
 	t = create_tween()
 	t.set_ease(Tween.EASE_OUT)
 	t.tween_property(
@@ -191,6 +142,7 @@ func _sway_step() -> Tween:
 		if moving and not is_reloading:
 			var current = CURRENT_GUN["targetTweenDir"]
 			var prev = CURRENT_GUN["prevTweenDir"]
+
 			CURRENT_GUN["targetTweenDir"] = _next_sway_dir(current, prev)
 			CURRENT_GUN["prevTweenDir"] = current
 			sway_tween = _sway_step()

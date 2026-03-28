@@ -42,6 +42,9 @@ extends CharacterBody3D
 @export_subgroup("Wall Stuff")
 @export var REMAINING_WALL_JUMPS: int = 3
 @export var WALL_JUMP_FORCE: float = 10.0
+@export var WALL_JUMP_INHERIT_FACTOR: float = 0.8
+@export var WALL_JUMP_COOLDOWN: float = 0.2
+var walljump_cooldown_timer := 0.0
 
 @export_subgroup("Slam Stuff")
 @export var SLAM_SPEED: int = 15
@@ -49,6 +52,7 @@ extends CharacterBody3D
 
 var grounded_time: float = 0.0
 var SPEED: float = 0.0
+var last_walljump_time: float = -1.0
 
 var air_max_speed: float:
 	get:
@@ -81,6 +85,8 @@ func apply_bhop_redirect(direction: Vector3):
 	velocity.z = horizontal.z
 
 func _physics_process(delta):
+	if walljump_cooldown_timer > 0.0:
+		walljump_cooldown_timer -= delta
 	GROUNDED = is_on_floor()
 	SPEED = velocity.length()
 
@@ -124,30 +130,33 @@ func _physics_process(delta):
 			velocity.x = move_toward(velocity.x, 0, FRICTION * delta * 6.0)
 			velocity.z = move_toward(velocity.z, 0, FRICTION * delta * 6.0)
 
-	if Input.is_action_pressed("jump"):
-		if not GROUNDED and IS_MOVING and velocity.y > -0.1:
-			apply_bhop_redirect(direction)
+	if Input.is_action_just_pressed("jump"):
+		var can_walljump = is_on_wall_only() and REMAINING_WALL_JUMPS > 0 and walljump_cooldown_timer <= 0.0
 
-		if is_on_wall_only() and REMAINING_WALL_JUMPS > 0:
+		if can_walljump:
 			var wn = get_wall_collision_normal()
-			velocity.x = wn.x * WALL_JUMP_FORCE
-			velocity.z = wn.z * WALL_JUMP_FORCE
-			velocity.y = JUMP_HEIGHT * 2.5
+			var wall_jump_dir = (-wn + Vector3.UP).normalized()
+			velocity.x = velocity.x * WALL_JUMP_INHERIT_FACTOR + wall_jump_dir.x * WALL_JUMP_FORCE
+			velocity.z = velocity.z * WALL_JUMP_INHERIT_FACTOR + wall_jump_dir.z * WALL_JUMP_FORCE
+			velocity.y = max(velocity.y, JUMP_HEIGHT * 2.5)
 			REMAINING_WALL_JUMPS -= 1
 			IS_JUMPING = true
 			grounded_time = 0.0
-		elif GROUNDED and not IS_SLAMMING:
-			velocity.y = JUMP_HEIGHT
-			IS_JUMPING = true
-			REMAINING_WALL_JUMPS = 3
-			grounded_time = 0.0
-			apply_bhop_redirect(direction)
-		elif GROUNDED and IS_SLAMMING and grounded_time <= SLAM_WAIT:
-			IS_JUMPING = true
-			grounded_time = 0.0
-			REMAINING_WALL_JUMPS = 3
-			velocity.y = SLAM_SPEED
-			IS_SLAMMING = false
+			walljump_cooldown_timer = WALL_JUMP_COOLDOWN
+	elif not is_on_wall_only() and not GROUNDED and IS_MOVING and velocity.y > -0.1:
+		apply_bhop_redirect(direction)
+	elif GROUNDED and not IS_SLAMMING:
+		velocity.y = JUMP_HEIGHT
+		IS_JUMPING = true
+		REMAINING_WALL_JUMPS = 3
+		grounded_time = 0.0
+		apply_bhop_redirect(direction)
+	elif GROUNDED and IS_SLAMMING and grounded_time <= SLAM_WAIT:
+		IS_JUMPING = true
+		grounded_time = 0.0
+		REMAINING_WALL_JUMPS = 3
+		velocity.y = SLAM_SPEED
+		IS_SLAMMING = false
 
 	if Input.is_action_just_pressed("dash") and not IS_DASHING and REMAINING_DASHES > 0:
 		start_dash(direction)
