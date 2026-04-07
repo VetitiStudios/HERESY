@@ -198,8 +198,12 @@ func _physics_process(delta):
 	move_and_slide()
 
 func start_dash(direction: Vector3):
+	var input_dir = Input.get_vector("left", "right", "forward", "backward")
+	var dash_dir = direction
+	
 	if direction == Vector3.ZERO:
 		direction = -camera.global_transform.basis.z.normalized()
+		dash_dir = direction
 	
 	IS_DASHING = true
 	
@@ -209,21 +213,33 @@ func start_dash(direction: Vector3):
 		velocity.x += direction.x * DASH_SPEED
 		velocity.z += direction.z * DASH_SPEED
 	else:
-		var input_dir = Input.get_vector("left", "right", "forward", "backward")
-		if input_dir.y <= 0 or direction == Vector3.ZERO:
-			direction = -camera.global_transform.basis.z.normalized()
-			velocity.x += direction.x * DASH_SPEED
-			velocity.z += direction.z * DASH_SPEED
-			velocity.y += direction.y * DASH_SPEED
-		else:
-			var cam_basis = camera.global_transform.basis
+		var cam_basis = camera.global_transform.basis
+		if input_dir.y > 0:
 			direction = (cam_basis.z * input_dir.y + cam_basis.x * input_dir.x)
 			direction.y = 0
 			direction = direction.normalized()
+			dash_dir = direction
 			velocity.x += direction.x * DASH_SPEED
 			velocity.z += direction.z * DASH_SPEED
+		elif input_dir.x != 0:
+			dash_dir = (cam_basis.x * input_dir.x).normalized()
+			direction = dash_dir
+			velocity.x += direction.x * DASH_SPEED
+			velocity.z += direction.z * DASH_SPEED
+		elif input_dir.y < 0:
+			direction = -cam_basis.z.normalized()
+			dash_dir = direction
+			velocity.x += direction.x * DASH_SPEED
+			velocity.z += direction.z * DASH_SPEED
+			velocity.y += direction.y * DASH_SPEED
+		elif direction == Vector3.ZERO:
+			direction = -cam_basis.z.normalized()
+			dash_dir = direction
+			velocity.x += direction.x * DASH_SPEED
+			velocity.z += direction.z * DASH_SPEED
+			velocity.y += direction.y * DASH_SPEED
 
-	var forward_dot = direction.dot(-camera.global_transform.basis.z)
+	var forward_dot = dash_dir.dot(-camera.global_transform.basis.z)
 	if forward_dot > 0.5:
 		TARGET_FOV = BASE_FOV - 5.0
 	elif forward_dot < -0.5:
