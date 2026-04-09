@@ -23,8 +23,11 @@ Startup="*res://4ev3r/scripts/startup.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/size/resizable=false
+window/size/mode=3
 window/size/borderless=true
+window/frame_pacing/android/enable_frame_pacing=false
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_width"
 window/vsync/vsync_mode=0
 
 [input]
