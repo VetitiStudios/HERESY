@@ -25,6 +25,9 @@ var current_animation: String = "idle"
 
 @onready var animation: AnimatedSprite2D = $Control/pistol
 @onready var fire_timer: Timer = $FireTimer
+@onready var shot_sound: AudioStreamPlayer = $AudioStreamPlayer 
+
+
 
 enum SwayState { LEFT, CENTER_FROM_LEFT, RIGHT, CENTER_FROM_RIGHT }
 var sway_state: SwayState = SwayState.LEFT
@@ -112,6 +115,7 @@ func _fire() -> void:
 		return
 
 	current_animation = "fire"
+	shot_sound.play()
 	current_ammo -= 1
 	fire_timer.start()
 
@@ -127,10 +131,8 @@ func _reload() -> void:
 	tween.set_ease(Tween.EASE_IN)
 	tween.tween_property(animation, "position", Vector2(reloadX, reloadBottomY), reloadTimer / 2)
 	await tween.finished
-	
 	current_ammo = max_ammo
 	current_animation = "idle"
-	
 	tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(animation, "position", Vector2(reloadX, reloadTopY), reloadTimer / 2)

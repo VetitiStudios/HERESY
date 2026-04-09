@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://cvs1b5obfg2ba"]
+[gd_scene load_steps=13 format=3 uid="uid://cvs1b5obfg2ba"]
 
 [ext_resource type="Script" uid="uid://nibqibp3okh7" path="res://4ev3r/scripts/guns/pistol.gd" id="1_2656o"]
 [ext_resource type="Texture2D" uid="uid://egc4kpxnvamv" path="res://4ev3r/assets/pistol/empty.png" id="2_qywb5"]
 [ext_resource type="Texture2D" uid="uid://ij3htx5yc3w0" path="res://4ev3r/assets/pistol/idle.png" id="3_f63q1"]
+[ext_resource type="AudioStream" uid="uid://temqs5cxa6ix" path="res://4ev3r/assets/sounds/shot.mp3" id="4_qywb5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kmg5g"]
 atlas = ExtResource("2_qywb5")
@@ -87,3 +88,7 @@ position = Vector2(939, 541)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_7qe1f")
 animation = &"fire"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_qywb5")
+max_polyphony = 1000
