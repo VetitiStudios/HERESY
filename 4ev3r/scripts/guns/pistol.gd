@@ -6,7 +6,6 @@ extends Node3D
 @export_group("Gun Data")
 @export var fire_animation_len: float = 0.15
 @export var max_ammo: int = 12
-@export var type: String = "pistol"
 @export var centeredX: float = 939.0
 @export var centeredY: float = 541.0
 @export var reloadX: float = 939.0
@@ -26,7 +25,6 @@ var current_animation: String = "idle"
 @onready var animation: AnimatedSprite2D = $Control/pistol
 @onready var fire_timer: Timer = $FireTimer
 @onready var shot_sound: AudioStreamPlayer = $AudioStreamPlayer 
-
 
 
 enum SwayState { LEFT, CENTER_FROM_LEFT, RIGHT, CENTER_FROM_RIGHT }
@@ -100,7 +98,7 @@ func _physics_process(delta: float):
 func _unhandled_input(event: InputEvent):
 	if event.is_action_pressed("fire"):
 		_fire_requested = true
-	if event.is_action_pressed("reload") and not is_reloading and type == "pistol":
+	if event.is_action_pressed("reload") and not is_reloading:
 		_reload_requested = true
 
 func _quadratic_bezier(p0: Vector2, p1: Vector2, p2: Vector2, t: float) -> Vector2:
